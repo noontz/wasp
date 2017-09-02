@@ -1,2 +1,2 @@
 # wasp
-one to one object oriented language for web assembly
+web assembly play ground - nothing interesting so far
