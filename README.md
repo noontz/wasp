@@ -1,13 +1,10 @@
+# wasp
+## What's A Simple Piece of language for web assembly?
 
 
-#wasp
-##What A Simple Piece of language for web assembly
+## Introduction
 
-
-
-##Introduction
-
-###Disclaimer
+### Disclaimer
 
 This is a project intended for personal learning, a narrow toolset and, since the web assembly specs are evolving as we speak, one thing seems sure : Things will break if they ever worked
 
