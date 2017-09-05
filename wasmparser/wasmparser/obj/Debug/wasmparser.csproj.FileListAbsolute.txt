@@ -1,6 +1,0 @@
-D:\Repos\wasp\wasmparser\wasmparser\bin\Debug\wasmparser.exe.config
-D:\Repos\wasp\wasmparser\wasmparser\bin\Debug\wasmparser.exe
-D:\Repos\wasp\wasmparser\wasmparser\bin\Debug\wasmparser.pdb
-D:\Repos\wasp\wasmparser\wasmparser\obj\Debug\wasmparser.exe
-D:\Repos\wasp\wasmparser\wasmparser\obj\Debug\wasmparser.pdb
-D:\Repos\wasp\wasmparser\wasmparser\obj\Debug\wasmparser.csprojResolveAssemblyReference.cache
