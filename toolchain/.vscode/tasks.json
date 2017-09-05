@@ -1,0 +1,41 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "taskName": "Chrome",
+            "type": "process",
+            "command": "chrome.exe",
+            "windows": {
+                "command": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+            },
+            "args": [
+                "${file}"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "taskName": "Clang",
+            "type": "shell",
+            "command": "clang++",
+            "windows": {
+                "command": "clang++.exe"
+            },
+            "args": [
+                "${file}","-ObjC++","--compile","--target=wasm32-unknown-unknown-wasm","--optimize=3", "--output add.wasm"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "taskName": "Wabt",
+            "type": "shell",
+            "command": "wasm2wast",
+            "windows": {
+                "command": "wasm2wast.exe"
+            },
+            "args": [
+                "add.wasm","-o", "add.wast"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}
