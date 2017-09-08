@@ -31,18 +31,15 @@ An inferior language that compiles directly to web assembly
 
 ```
 int
-int2
-dec
-dec2
 ```
 
 ### Comments
 
 ```
-// comment
+
 ```
 
-### Keywords & Identifiers
+### Keywords
 
 ```
 export
@@ -57,14 +54,13 @@ export
 ### Punctuators
 
 ```
-()
+{}()
 ```
 
 ### Operators
 
 ```
 +
-=>
 ```
 
 
@@ -73,9 +69,9 @@ export
 
 ```
 export
-(
-	int Add (int x, int y) => x + y
-)
+{
+	int Add (int x, int y) { x + y }
+}
 ```
 
 
