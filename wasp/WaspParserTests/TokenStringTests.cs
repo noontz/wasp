@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using wasp;
 using wasp.Tokenization;
@@ -11,18 +12,6 @@ namespace waspTests
     [TestClass]
     public class TokenStringTests
     {
-        [TestMethod]
-        public void EqualTest()
-        {
-            var a = new byte[] { 0x01, 0x02 };
-            var b = new byte[] { 0x01, 0x02 };
-
-            var aS = new TokenString(a);
-            var bS = new TokenString(b);
-
-            Assert.IsTrue(aS.Equals(bS));
-        }
-
         [TestMethod]
         public void HashCodeTest()
         {
@@ -41,10 +30,10 @@ namespace waspTests
         [TestMethod]
         public void StringTest()
         {
-            const string check = "Hello";
-            var token = new TokenString(check);
-
-            Assert.IsTrue(token.ToString() == check);
+            const string goal = "Hello";
+            var token = new TokenString(goal);
+            var result = token.ToString();
+            Assert.IsTrue( result == goal);
         }
 
         [TestMethod]
@@ -121,6 +110,15 @@ namespace waspTests
                 Assert.IsNotNull(e);
                 Assert.IsInstanceOfType(e, typeof(ArgumentOutOfRangeException));
             }
+        }
+
+        [TestMethod]
+        public void ConstructorTest_Byte()
+        {
+            var goal = "P";
+            var chars = Encoding.UTF8.GetBytes(goal);
+            var tokenString = new TokenString(chars[0]);
+            Assert.IsTrue(tokenString.ToString() == goal);
         }
 
     }

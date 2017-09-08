@@ -7,7 +7,7 @@ namespace wasp.Tokenization
     {
         readonly Dictionary<TokenString, Tokens> tokenMap;
 
-        public TokensMap() => tokenMap = new Dictionary<TokenString, Tokens>
+        public TokensMap() => tokenMap = new Dictionary<TokenString, Tokens>(new TokenStringComparer())
         {
             {new TokenString("{"), Tokens.Lbracket},
             {new TokenString("}"), Tokens.Rbracket},
