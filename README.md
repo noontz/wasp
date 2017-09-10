@@ -18,14 +18,16 @@ An inferior language that compiles directly to web assembly
 
 * Global functions
 * Basic Math operations
-* Import / Export declarations
+* Export declarations
 * Auto generate java script glue code
+* Generate valid wasm
+* Integrate in visual studio code as plugin
 
 
 
 
 
-## Current Target Specifications
+## Current Specifications
 
 ### Encoding
 
@@ -60,7 +62,7 @@ export
 ### Punctuators
 
 ```
-{}()
+{}(),
 ```
 
 ### Operators
@@ -87,9 +89,11 @@ export
 
 
 
+
+
 ## Specification
 
-### There is absolutely nothing here
+### Nothing yet
 
 
 
