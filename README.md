@@ -1,5 +1,5 @@
 # wasp
-## What's A Simple Piece of language for web assembly?
+## WebAssembly Playground Language
 
 
 ## Introduction
