@@ -8,22 +8,19 @@ namespace wasp.Tokenization
         public Token(Tokens id)
         {
             Id = id;
-            Value = null;
+            Value = new TokenString();
         }
 
         public Token(Tokens id, TokenString value)
         {
             Id = id;
-            Value = value.ToString();
+            Value = value;
         }
 
         public Tokens Id;
 
-        public string Value;
+        public TokenString Value;
 
-        public override string ToString()
-        {
-            return Id + " > " + Value;
-        }
+        public override string ToString() => $"{Id}{(Value.HasValue ? ":" : "")}{Value}";
     }
 }

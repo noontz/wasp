@@ -1,20 +1,40 @@
 ﻿using System;
 using System.Text;
+using System.Text.RegularExpressions;
 
 // ReSharper disable NonReadonlyMemberInGetHashCode
 // hash code is used in TokensMap where values are unchanged during application life
 namespace wasp.Tokenization
 {
+    /// <summary>
+    ///     Encapsulates logic for encompasing 8 bytes representing UTF8 characters in a long
+    /// </summary>
     struct TokenString : IEquatable<TokenString>
     {
+        /// <summary>
+        ///     Indicatees if the TokenString holding any value
+        /// </summary>
         public bool HasValue => value != 0;
 
+        /// <summary>
+        ///     Indicates if the TokenStrings value is a number
+        /// </summary>
         public bool IsNumber { get; private set; }
 
+        /// <summary>
+        ///     The current lenght of the value
+        /// </summary>
         byte currentLength;
 
+        /// <summary>
+        ///     The TokenStrings 8 bytes represented in a long
+        /// </summary>
         long value;
 
+        /// <summary>
+        ///     Instantiates a TokenString with its first character
+        /// </summary>
+        /// <param name="firstCharacter"></param>
         public TokenString(byte firstCharacter)
         {
             value = firstCharacter;
@@ -22,9 +42,14 @@ namespace wasp.Tokenization
             IsNumber = firstCharacter > 47 && firstCharacter < 58;
         }
 
+        /// <summary>
+        ///     Instantiates a TokenString with a 1 - 8 length string of letters
+        /// </summary>
+        /// <param name="token"></param>
         public TokenString(string token)
         {
-            //TODO check for numbers with REGEX and throw exception if any
+            if (!Regex.IsMatch(token, @"^[a-zA-Z]+$"))
+                throw new ArgumentOutOfRangeException($"{nameof(token)} \"{token}\" includes illegal characters");
             value = 0;
             currentLength = 0;
             IsNumber = false;
@@ -38,11 +63,16 @@ namespace wasp.Tokenization
             currentLength = (byte) byteBuffer.Length;
         }
 
+        /// <summary>
+        ///     Adds a character to the TokenString and returns true if successfull
+        /// </summary>
+        /// <param name="character"></param>
+        /// <returns></returns>
         public bool AddCharacter(byte character)
         {
             if (currentLength == 8)
                 return false;
-            if (character > 47 || character < 58)
+            if (character > 47 && character < 58)
             {
                 if (!IsNumber && currentLength > 0)
                     return false;
@@ -54,12 +84,16 @@ namespace wasp.Tokenization
             return true;
         }
 
+        /// <summary>
+        ///     Clears the TokenString Value
+        /// </summary>
         public void Clear()
         {
             value = 0;
             currentLength = 0;
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             var result = "";
@@ -68,8 +102,10 @@ namespace wasp.Tokenization
             return result;
         }
 
+        /// <inheritdoc />
         public bool Equals(TokenString other) => value == other.value;
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked
