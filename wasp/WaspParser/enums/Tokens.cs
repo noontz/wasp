@@ -8,8 +8,10 @@ namespace wasp.enums
         Rbracket,
         Lparens,
         Rparens,
+        Comma,
         Int32,
         Export,
-        Identifier
+        Identifier,
+        Number
     }
 }

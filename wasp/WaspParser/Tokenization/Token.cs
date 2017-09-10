@@ -1,25 +1,29 @@
-﻿using System.Collections.Generic;
-using wasp.enums;
+﻿using wasp.enums;
 
 namespace wasp.Tokenization
 {
-    class Token
+    struct Token
     {
-        readonly HashSet<Tokens> nextValidTokens;
+
+        public Token(Tokens id)
+        {
+            Id = id;
+            Value = null;
+        }
+
+        public Token(Tokens id, TokenString value)
+        {
+            Id = id;
+            Value = value.ToString();
+        }
 
         public Tokens Id;
 
-        public long Identifier;
+        public string Value;
 
-        public Token(Tokens id, IEnumerable<Tokens> nextValidTokes)
+        public override string ToString()
         {
-            Id = id;
-            nextValidTokens = new HashSet<Tokens>(nextValidTokes);
-        }
-
-        public bool ValidNext(Token nextToken)
-        {
-            return nextValidTokens.Contains(nextToken.Id);
+            return Id + " > " + Value;
         }
     }
 }

@@ -1,50 +1,81 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 
+// ReSharper disable NonReadonlyMemberInGetHashCode
+// hash code is used in TokensMap where values are unchanged during application life
 namespace wasp.Tokenization
 {
-    class TokenString
+    struct TokenString : IEquatable<TokenString>
     {
-        readonly int currentLength;
+        public bool HasValue => value != 0;
 
-        public TokenString(byte theByte)
+        public bool IsNumber { get; private set; }
+
+        byte currentLength;
+
+        long value;
+
+        public TokenString(byte firstCharacter)
         {
-            Value = new byte[8];
-            Value[0] = theByte;
+            value = firstCharacter;
             currentLength = 1;
-        }
-
-        public TokenString(byte[] bytes)
-        {
-            Value = new byte[8];
-            if (bytes == null || bytes.Length == 0 || bytes.Length > 8)
-                throw new ArgumentOutOfRangeException(nameof(bytes));
-            Buffer.BlockCopy(bytes, 0, Value, 0, bytes.Length);
-            currentLength = bytes.Length;
+            IsNumber = firstCharacter > 47 && firstCharacter < 58;
         }
 
         public TokenString(string token)
         {
-            Value = new byte[8];
+            //TODO check for numbers with REGEX and throw exception if any
+            value = 0;
+            currentLength = 0;
+            IsNumber = false;
+            if (token.Length > 8)
+                throw new ArgumentOutOfRangeException(nameof(token));
             if (string.IsNullOrEmpty(token))
-                throw new ArgumentOutOfRangeException(nameof(token));
+                return;
             var byteBuffer = Encoding.UTF8.GetBytes(token);
-            if (byteBuffer.Length > 8)
-                throw new ArgumentOutOfRangeException(nameof(token));
-            Buffer.BlockCopy(byteBuffer, 0, Value, 0, byteBuffer.Length);
-            currentLength = byteBuffer.Length;
+            for (var i = 0; i < byteBuffer.Length; i++)
+                value += (long) byteBuffer[i] << ((byteBuffer.Length - i - 1) * 8);
+            currentLength = (byte) byteBuffer.Length;
         }
 
-        public void AddCharacter(byte character) => Value[currentLength] = character;
+        public bool AddCharacter(byte character)
+        {
+            if (currentLength == 8)
+                return false;
+            if (character > 47 || character < 58)
+            {
+                if (!IsNumber && currentLength > 0)
+                    return false;
+                IsNumber = true;
+            }
+            value = value << 8;
+            value += character;
+            currentLength++;
+            return true;
+        }
 
-        public byte[] Value { get; }
+        public void Clear()
+        {
+            value = 0;
+            currentLength = 0;
+        }
 
-        public int Length => Value.Length;
+        public override string ToString()
+        {
+            var result = "";
+            for (var i = currentLength - 1; i >= 0; i--)
+                result += Convert.ToChar((value >> (i * 8)) & 0x00_00_00_00_00_00_00_FF);
+            return result;
+        }
 
-        public override string ToString() => new string(Value
-            .TakeWhile(b => b != 0x00)
-            .Select(Convert.ToChar)
-            .ToArray());
+        public bool Equals(TokenString other) => value == other.value;
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (int) (value ^ (value >> 32));
+            }
+        }
     }
 }

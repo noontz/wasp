@@ -27,6 +27,12 @@ An inferior language that compiles directly to web assembly
 
 ## Current Target Specifications
 
+### Encoding
+
+**WASP only supports UTF-8 encoding**
+
+
+
 ### Types
 
 ```
@@ -70,7 +76,10 @@ export
 ```
 export
 {
-	int Add (int x, int y) { x + y }
+	int Add (int x, int y)
+    {
+    	x + y
+    }
 }
 ```
 
