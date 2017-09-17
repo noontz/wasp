@@ -4,11 +4,13 @@ namespace wasp.enums
     {
         None,
         Plus,
+        Return,
         Lbracket,
         Rbracket,
         Lparens,
         Rparens,
         Comma,
+        SemiColon,
         Int32,
         Export,
         Identifier,

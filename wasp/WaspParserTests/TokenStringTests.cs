@@ -25,7 +25,7 @@ namespace waspTests
             var es = new Exception[3];
             try
             {
-                string a = null;
+                const string a = "a3bb";
                 new TokenString(a);
             }
             catch (Exception e)
@@ -34,7 +34,7 @@ namespace waspTests
             }
             try
             {
-                const string a = "123456789";
+                const string a = "aa9";
                 new TokenString(a);
             }
             catch (Exception e)
@@ -43,7 +43,7 @@ namespace waspTests
             }
             try
             {
-                const string a = "";
+                const string a = "abcdefghi";
                 new TokenString(a);
             }
             catch (Exception e)

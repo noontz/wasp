@@ -25,7 +25,9 @@ namespace wasp.Tokenization
             {new TokenString("+"), Tokens.Plus},
             {new TokenString("int"), Tokens.Int32},
             {new TokenString("export"), Tokens.Export},
-            {new TokenString(","), Tokens.Comma}
+            {new TokenString(","), Tokens.Comma},
+            {new TokenString("return"), Tokens.Return},
+            {new TokenString(";"), Tokens.SemiColon}
         };
 
         /// <summary>

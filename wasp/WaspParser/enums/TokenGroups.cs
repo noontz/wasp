@@ -2,11 +2,11 @@
 {
     enum TokenGroups
     {
-        Error,
-        Descriptor,
+        None,
+        Literal,
         Keyword,
         Operator,
         Punctuator,
-        Type
+        ValueType,
     }
 }

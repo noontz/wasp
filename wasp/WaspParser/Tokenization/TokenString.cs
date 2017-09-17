@@ -48,8 +48,8 @@ namespace wasp.Tokenization
         /// <param name="token"></param>
         public TokenString(string token)
         {
-            if (!Regex.IsMatch(token, @"^[a-zA-Z]+$"))
-                throw new ArgumentOutOfRangeException($"{nameof(token)} \"{token}\" includes illegal characters");
+            if (Regex.IsMatch(token, @"[0-9]+"))
+                throw new ArgumentOutOfRangeException($"{nameof(token)} \"{token}\" cannot include numbers");
             value = 0;
             currentLength = 0;
             IsNumber = false;
