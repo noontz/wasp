@@ -27,7 +27,8 @@ namespace wasp.Tokenization
                 throw new FileNotFoundException($"{nameof(filePath)} {filePath} was not found");
             var returnImediate = false;
             var tokenBuffer = new TokenString();
-            var imidiateToken = new Token(Tokens.None);
+            var imidiateToken = new Token(Tokens.None, 0);
+            var counter = -1;
             using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Read))
             {
                 while (true)
@@ -40,29 +41,31 @@ namespace wasp.Tokenization
                     var readInt = fileStream.ReadByte();
                     if (readInt == -1) break;
                     if (readInt > 127 || readInt < 33) continue;
-                    var currentToken = new TokenString((byte) readInt);
-                    var token = map.GetToken(currentToken);
+                    var currentTokenString = new TokenString((byte) readInt);
+                    var token = map.GetToken(currentTokenString);
                     if (token == Tokens.None)
                     {
                         tokenBuffer.AddCharacter((byte) readInt);
                         token = map.GetToken(tokenBuffer);
                         if (token == Tokens.None) continue;
                         tokenBuffer.Clear();
-                        yield return new Token(token, tokenBuffer);
+                        counter++;
+                        yield return new Token(token, counter, tokenBuffer);
                         continue;
                     }
                     if (tokenBuffer.HasValue)
                     {
                         var newBuffer = new TokenString();
-                        imidiateToken = new Token(token, newBuffer);
+                        counter+=2;
+                        imidiateToken = new Token(token, counter, newBuffer);
                         returnImediate = true;
-                        var returnToken = new Token(tokenBuffer.IsNumber ? Tokens.Number : Tokens.Identifier,
-                            tokenBuffer);
+                        var returnToken = new Token(tokenBuffer.IsNumber ? Tokens.Number : Tokens.Identifier, counter - 1, tokenBuffer);
                         tokenBuffer = newBuffer;
                         yield return returnToken;
                         continue;
                     }
-                    yield return new Token(token);
+                    counter++;
+                    yield return new Token(token, counter);
                 }
             }
         }

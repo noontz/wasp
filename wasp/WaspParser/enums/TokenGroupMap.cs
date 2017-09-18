@@ -22,6 +22,6 @@ namespace wasp.enums
             {Tokens.Number, TokenGroups.Literal}
         };
 
-        public static  TokenGroups GetGroup(Token token) => Map[token.Id];
+        public static  TokenGroups GetGroup(Token token) => Map[token.ID];
     }
 }

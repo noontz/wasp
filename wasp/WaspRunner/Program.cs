@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using wasp;
+using wasp.Linking;
 using wasp.Tokenization;
 
 namespace waspRunner
@@ -13,7 +14,7 @@ namespace waspRunner
 
 
 
-            TestRunA();
+            TestTokenParser();
             
             Console.ReadKey();
         }
@@ -26,6 +27,16 @@ namespace waspRunner
             {
                 Console.WriteLine(line);
             }
+        }
+
+        public static void TestTokenParser()
+        {
+            var a = @"D:\Repos\wasp\vscode\implementation_1.wasp";
+            var extractor = new TokenExtractor();
+
+            var tokenParser = new TokenParser();
+
+            tokenParser.Run(extractor.ExtractTokens(a));
         }
 
         public static void TestCompiler()
@@ -53,7 +64,7 @@ namespace waspRunner
             }
         }
 
-        public static void TestRunA()
+        public static void TestTokenizer()
         {
             var a = @"D:\Repos\wasp\vscode\implementation_1.wasp";
             var extractor = new TokenExtractor();

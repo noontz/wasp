@@ -2,25 +2,24 @@
 
 namespace wasp.Tokenization
 {
-    struct Token
+    class Token
     {
-
-        public Token(Tokens id)
+        public Token(Tokens id, int position)
         {
-            Id = id;
-            Value = new TokenString();
+            ID = id;
+            Position = position;
         }
 
-        public Token(Tokens id, TokenString value)
-        {
-            Id = id;
-            Value = value;
-        }
+        public Token(Tokens id, int position, TokenString value) : this(id, position) => Value = value;
 
-        public Tokens Id;
+        public int Position { get; }
 
-        public TokenString Value;
+        public TokenGroups Group => TokenGroupMap.GetGroup(this);
 
-        public override string ToString() => $"{Id}{(Value.HasValue ? ":" : "")}{Value}";
+        public Tokens ID { get; }
+
+        public TokenString Value { get; }
+
+        public override string ToString() => $"{Position.ToString().PadRight(3)} > {Group.ToString().PadRight(12)}{ID}{(Value.HasValue ? " > " : "")}{Value}";
     }
 }

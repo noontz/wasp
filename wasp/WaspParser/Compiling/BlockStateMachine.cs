@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using wasp.enums;
 using wasp.Tokenization;
 
@@ -6,40 +7,35 @@ namespace wasp.Compiling
 {
     class BlockStateMachine
     {
-        public int BracketLayer { get; private set; }
+        readonly Stack<int> leftBrackets = new Stack<int>();
 
-        public int ParensLayer { get; private set; }
+        readonly Stack<int> leftParens = new Stack<int>();
 
         public void Set(Token token)
         {
-            switch (token.Id)
+            switch (token.ID)
             {
                 case Tokens.Lbracket:
-                    BracketBlockStarted?.Invoke(BracketLayer);
-                    BracketLayer++;
+                    leftBrackets.Push(token.Position);
                     break;
                 case Tokens.Rbracket:
-                    BracketLayer--;
-                    BracketBlockTerminated?.Invoke(BracketLayer);
+                    BracketBlockReady?.Invoke(leftBrackets.Pop(), token.Position);
                     break;
                 case Tokens.Lparens:
-                    ParensBlockStarted?.Invoke(ParensLayer);
-                    ParensLayer++;
+                    leftParens.Push(token.Position);
                     break;
                 case Tokens.Rparens:
-                    ParensLayer--;
-                    ParensBlockTerminated?.Invoke(ParensLayer);
+                    ParensBlockReady?.Invoke(leftParens.Pop(), token.Position);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(token.Id), token, null);
+                    throw new ArgumentOutOfRangeException(nameof(token.ID), token, null);
             }
         }
-        public event Action<int> ParensBlockStarted;
 
-        public event Action<int> BracketBlockStarted;
+        public event Action<int, int> BracketBlockReady;
 
-        public event Action<int> ParensBlockTerminated;
+        public event Action<int, int> ParensBlockReady;
 
-        public event Action<int> BracketBlockTerminated;
+        
     }
 }
