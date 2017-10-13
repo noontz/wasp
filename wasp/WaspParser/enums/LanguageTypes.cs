@@ -1,7 +1,8 @@
 ﻿namespace wasp.enums
 {
-    enum LanguageTypes
+    enum LanguageTypes : sbyte
     {
+        None = 0,
         Int32 = -1,
         Int64 = -2,
         Float32 = -3,

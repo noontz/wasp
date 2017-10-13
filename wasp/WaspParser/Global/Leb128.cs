@@ -7,6 +7,9 @@ namespace wasp.Global
     /// </summary>
     static class Leb128
     {
+
+        public static byte[] VarUint32(int value) => PositiveLeb128((uint)value, 4);
+
         public static byte[] VarUint32(uint value) => PositiveLeb128(value, 4);
 
         public static byte VarInt7(sbyte value) => (byte) (value & 0x7F);

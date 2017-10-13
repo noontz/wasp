@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using wasp.enums;
 using wasp.Tokenization;
 
-namespace wasp.Compiling
+namespace wasp.Parsing
 {
     class BlockStateMachine
     {
@@ -35,7 +35,5 @@ namespace wasp.Compiling
         public event Action<int, int> BracketBlockReady;
 
         public event Action<int, int> ParensBlockReady;
-
-        
     }
 }

@@ -10,9 +10,9 @@
         Memory = 0x05,
         Global = 0x06,
         Export = 0x07,
-        Start = 0x10,
-        Element = 0x11,
-        Code = 0x012,
-        Data = 0x013
+        Start = 0x08,
+        Element = 0x09,
+        Code = 0x0a,
+        Data = 0x0b
     }
 }

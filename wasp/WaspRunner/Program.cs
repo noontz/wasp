@@ -2,19 +2,23 @@
 using System.Diagnostics;
 using System.IO;
 using wasp;
-using wasp.Linking;
+using wasp.Parsing;
 using wasp.Tokenization;
 
 namespace waspRunner
 {
     class Program
     {
+
+    const string Goal_A = @"D:\Repos\wasp\vscode\implementation_1.wasp";
         static void Main()
         {
 
-
+            TestTokenizer();
 
             TestTokenParser();
+
+            API.Compile(Goal_A, "");
             
             Console.ReadKey();
         }
@@ -31,12 +35,11 @@ namespace waspRunner
 
         public static void TestTokenParser()
         {
-            var a = @"D:\Repos\wasp\vscode\implementation_1.wasp";
             var extractor = new TokenExtractor();
 
             var tokenParser = new TokenParser();
 
-            tokenParser.Run(extractor.ExtractTokens(a));
+            tokenParser.Run(extractor.ExtractTokens(Goal_A));
         }
 
         public static void TestCompiler()
@@ -66,11 +69,10 @@ namespace waspRunner
 
         public static void TestTokenizer()
         {
-            var a = @"D:\Repos\wasp\vscode\implementation_1.wasp";
             var extractor = new TokenExtractor();
             try
             {
-                foreach (var extractToken in extractor.ExtractTokens(a))
+                foreach (var extractToken in extractor.ExtractTokens(Goal_A))
                 {
                     Console.WriteLine(extractToken);
                 }
@@ -81,6 +83,4 @@ namespace waspRunner
             }
         }
     }
-
-    
 }
