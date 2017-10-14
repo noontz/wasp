@@ -1,25 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using wasp.enums;
+﻿using System.Collections.Generic;
 using wasp.Intermediate;
+using wasp.Parsing;
 
 namespace wasp.Compiling
 {
     class FunctionsCompiler
     {
-        public IEnumerable<Section> CompileFunctions(IEnumerable<Function> functions)
+        readonly CodeSection codeSection = new CodeSection();
+        readonly ExportSection exportSection = new ExportSection();
+        readonly FunctionSection functionSection = new FunctionSection();
+        readonly TypeSection typeSection = new TypeSection();
+
+        public IEnumerable<ISection> CompileFunctions(IEnumerable<Function> functions)
         {
-            var sections = new Dictionary<ModuleSections, Section>
-            {
-                {ModuleSections.Type, new TypeSection() }
-            };
+            var currentIndex = -1;
             foreach (var function in functions)
             {
-                ((TypeSection)sections[ModuleSections.Type]).AddSignature(function.Signature);
+                currentIndex++;
+
+                typeSection.AddSignature(function.Signature);
+
+                functionSection.AddFunction(function);
+
+                codeSection.AddCodeBody(function.Codebody, currentIndex);
+
+                if (function.Context == Context.Export)
+                    exportSection.AddFunction(function, currentIndex);
             }
-            return sections.Values;
+            yield return typeSection;
+            yield return functionSection;
+            yield return exportSection;
+            yield return codeSection;
         }
     }
 }

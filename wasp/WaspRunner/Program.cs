@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using wasp;
+using wasp.Global;
 using wasp.Parsing;
 using wasp.Tokenization;
 
@@ -9,28 +10,31 @@ namespace waspRunner
 {
     class Program
     {
+        const string WasmA = @"D:\Repos\wasp\vscode\implementation_1.wasm";
 
-    const string Goal_A = @"D:\Repos\wasp\vscode\implementation_1.wasp";
+        const string WaspA = @"D:\Repos\wasp\vscode\implementation_1.wasp";
+
         static void Main()
         {
+
 
             TestTokenizer();
 
             TestTokenParser();
-
-            API.Compile(Goal_A, "");
-            
+            var sw = new Stopwatch();
+            sw.Start();
+            API.Compile(WaspA, WasmA);
+            sw.Stop();
+            Console.WriteLine(sw.ElapsedMilliseconds);
             Console.ReadKey();
         }
 
         static void Process_Exited(object sender, EventArgs e)
         {
-            if(!File.Exists("check.wast"))
+            if (!File.Exists("check.wast"))
                 return;
             foreach (var line in File.ReadLines("check.wast"))
-            {
                 Console.WriteLine(line);
-            }
         }
 
         public static void TestTokenParser()
@@ -39,7 +43,7 @@ namespace waspRunner
 
             var tokenParser = new TokenParser();
 
-            tokenParser.Run(extractor.ExtractTokens(Goal_A));
+            tokenParser.Run(extractor.ExtractTokens(WaspA));
         }
 
         public static void TestCompiler()
@@ -72,10 +76,8 @@ namespace waspRunner
             var extractor = new TokenExtractor();
             try
             {
-                foreach (var extractToken in extractor.ExtractTokens(Goal_A))
-                {
+                foreach (var extractToken in extractor.ExtractTokens(WaspA))
                     Console.WriteLine(extractToken);
-                }
             }
             catch (Exception e)
             {

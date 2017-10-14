@@ -7,14 +7,13 @@ using wasp.Intermediate;
 
 namespace wasp.Compiling
 {
-    class TypeSection : Section
+    class TypeSection : ISection
     {
         readonly List<TypeBytes> types = new List<TypeBytes>();
+
         int typesByteCount;
 
-        public TypeSection() : base(ModuleSections.Type)
-        {
-        }
+        public ModuleSections ID => ModuleSections.Type;
 
         public void AddSignature(Signature signature)
         {
@@ -32,15 +31,17 @@ namespace wasp.Compiling
             }
         }
 
-        public override IEnumerable<byte> Compile()
+        public IEnumerable<byte> Compile()
         {
             yield return (byte) ID;
 
             var numberOfTypes = Leb128.VarUint32(types.Count);
             foreach (var b in Leb128.VarUint32(typesByteCount + numberOfTypes.Length))
                 yield return b;
+
             foreach (var b in numberOfTypes)
                 yield return b;
+
             foreach (var typeBytes in types)
                 foreach (var b in typeBytes.Bytes)
                     yield return b;

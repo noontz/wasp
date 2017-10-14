@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using wasp.Parsing;
 using wasp.Tokenization;
@@ -21,11 +22,23 @@ namespace wasp
 
             var sections = tokenParser.Run(tokens);
 
-            var typeBytes = sections.First().Compile();
+            Console.WriteLine();
 
-            return;
+            //foreach (var section in sections)
+            //{
+            //    var result = section.Compile();
+            //    Console.WriteLine(section.ID);
+            //    Console.Write("0x ");
+            //    foreach (var b in result)
+            //    {
+            //        Console.Write(b.ToString("X2") + " ");
+            //    }
+            //    Console.WriteLine();
+            //}
 
-            using (var fileStream = new FileStream(wasp, FileMode.Create, FileAccess.Write))
+
+
+            using (var fileStream = new FileStream(wasm, FileMode.Create, FileAccess.Write))
             {
                 using (var binaryWriter = new BinaryWriter(fileStream))
                 {
@@ -33,7 +46,7 @@ namespace wasp
                     binaryWriter.Write(Magic);
                     binaryWriter.Write(Version);
                     // sections
-                    foreach (var section in sections.OrderBy(section => section.ID))
+                    foreach (var section in sections)
                         foreach (var currentByte in section.Compile())
                             binaryWriter.Write(currentByte);
                 }

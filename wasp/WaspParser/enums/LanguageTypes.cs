@@ -2,13 +2,13 @@
 {
     enum LanguageTypes : sbyte
     {
-        None = 0,
-        Int32 = -1,
-        Int64 = -2,
-        Float32 = -3,
-        Float64 = -4,
-        AnyFunc = -10,
-        Func = -20,
-        EmptyBlock = -40
+        None = 0x00,
+        Int32 = -0x01,
+        Int64 = -0x02,
+        Float32 = -0x03,
+        Float64 = -0x04,
+        AnyFunc = -0x10,
+        Func = -0x20,
+        EmptyBlock = -0x40
     }
 }

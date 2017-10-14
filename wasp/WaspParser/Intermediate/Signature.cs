@@ -6,16 +6,22 @@ namespace wasp.Intermediate
 {
     class Signature
     {
+        public Token Identifier { get; }
+
         public Token ReturnType;
 
-        byte[] typeSectionIndex;
+        public byte[] TypeIndex;
 
-        public Signature() => Parameters = new List<Parameter>();
+        public Signature(Token identifier)
+        {
+            Parameters = new List<Parameter>();
+            Identifier = identifier;
+        }
 
         public List<Parameter> Parameters { get; }
 
         public void AddParameter(Token inputType, Token identifier, int position) => Parameters.Add(new Parameter(inputType, identifier,(uint)position));
 
-        public void SetIndex(int position) => typeSectionIndex = Leb128.VarUint32((uint) position);
+        public void SetIndex(int position) => TypeIndex = Leb128.VarUint32((uint) position);
     }
 }

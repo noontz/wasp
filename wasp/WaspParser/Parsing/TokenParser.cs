@@ -29,7 +29,7 @@ namespace wasp.Parsing
         {
             if (tokenList[arg1 - 1].ID == Tokens.Identifier) // function signature 
             {
-                var signature = new Signature();
+                var signature = new Signature(tokenList[arg1 - 1]);
                 if (tokenList[arg1 - 2].Group == TokenGroups.ValueType) // return type
                     signature.ReturnType = tokenList[arg1 - 2];
                 var numberOfArguments = (arg2 - arg1) / 3;
@@ -59,7 +59,7 @@ namespace wasp.Parsing
             }
         }
 
-        public IEnumerable<Section> Run(IEnumerable<Token> tokens)
+        public IEnumerable<ISection> Run(IEnumerable<Token> tokens)
         {
             foreach (var token in tokens)
             {

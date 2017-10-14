@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -24,12 +27,21 @@ namespace wasp.Tokenization
         /// <summary>
         ///     The current lenght of the value
         /// </summary>
-        byte currentLength;
+        public byte Length { get; private set; }
 
         /// <summary>
         ///     The TokenStrings 8 bytes represented in a long
         /// </summary>
         long value;
+
+        public IEnumerable<byte> Bytes
+        {
+            get
+            {
+                for (var i = Length - 1; i >= 0; i--)
+                    yield return (byte)((value >> (i * 8)) & 0x00_00_00_00_00_00_00_FF);
+            }
+        }
 
         /// <summary>
         ///     Instantiates a TokenString with its first character
@@ -38,7 +50,7 @@ namespace wasp.Tokenization
         public TokenString(byte firstCharacter)
         {
             value = firstCharacter;
-            currentLength = 1;
+            Length = 1;
             IsNumber = firstCharacter > 47 && firstCharacter < 58;
         }
 
@@ -51,7 +63,7 @@ namespace wasp.Tokenization
             if (Regex.IsMatch(token, @"[0-9]+"))
                 throw new ArgumentOutOfRangeException($"{nameof(token)} \"{token}\" cannot include numbers");
             value = 0;
-            currentLength = 0;
+            Length = 0;
             IsNumber = false;
             if (token.Length > 8)
                 throw new ArgumentOutOfRangeException(nameof(token));
@@ -60,7 +72,7 @@ namespace wasp.Tokenization
             var byteBuffer = Encoding.UTF8.GetBytes(token);
             for (var i = 0; i < byteBuffer.Length; i++)
                 value += (long) byteBuffer[i] << ((byteBuffer.Length - i - 1) * 8);
-            currentLength = (byte) byteBuffer.Length;
+            Length = (byte) byteBuffer.Length;
         }
 
         /// <summary>
@@ -70,17 +82,17 @@ namespace wasp.Tokenization
         /// <returns></returns>
         public bool AddCharacter(byte character)
         {
-            if (currentLength == 8)
+            if (Length == 8)
                 return false;
             if (character > 47 && character < 58)
             {
-                if (!IsNumber && currentLength > 0)
+                if (!IsNumber && Length > 0)
                     return false;
                 IsNumber = true;
             }
             value = value << 8;
             value += character;
-            currentLength++;
+            Length++;
             return true;
         }
 
@@ -90,18 +102,12 @@ namespace wasp.Tokenization
         public void Clear()
         {
             value = 0;
-            currentLength = 0;
+            Length = 0;
         }
 
         /// <inheritdoc />
-        public override string ToString()
-        {
-            var result = "";
-            for (var i = currentLength - 1; i >= 0; i--)
-                result += Convert.ToChar((value >> (i * 8)) & 0x00_00_00_00_00_00_00_FF);
-            return result;
-        }
-
+        public override string ToString() => new string(Encoding.UTF8.GetChars(Bytes.ToArray()));
+       
         /// <inheritdoc />
         public bool Equals(TokenString other) => value == other.value;
 
