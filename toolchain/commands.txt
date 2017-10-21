@@ -1,9 +1,0 @@
--- build wasm
-> cd D:\Repos\wasp\toolchain
-> clang++ add.cpp -ObjC++ --compile --target=wasm32-unknown-unknown-wasm --optimize=3 --output add.wasm
-
--- parse wasm
-> wasm2wast add.wasm -o add.wast
-
-
-> D:\Repos\wasp\wasp\WaspRunner\bin\Release\.net osv> dotnet waspRunner.dll

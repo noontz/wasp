@@ -1,1 +1,0 @@
-int MYVAR = 8;
